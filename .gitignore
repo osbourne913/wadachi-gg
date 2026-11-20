@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.cache/
+check-out/
+# Never commit a data request export or anything taken from one.
+*.zip
+riot-data/

@@ -1,0 +1,97 @@
+/*
+  Page-level styles. The design system's own sheets (reset, astryx, theme) load
+  first and sit in cascade layers; everything here is unlayered, so it wins
+  without specificity tricks. Tokens only: no colors or sizes of our own.
+*/
+
+/*
+  The one rule placed inside the design system's lowest layer: a default that
+  any component's own text-wrap (a balanced heading, a truncated cell) overrides.
+  It keeps a paragraph from ending on a single stranded character.
+*/
+@layer reset {
+  body {
+    text-wrap: pretty;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  /* The same wash the app shell paints, so the page behind it never shows through. */
+  background: var(--color-background-body);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-body);
+  overflow-wrap: break-word;
+}
+
+/* Japanese line breaking: break headings at phrase boundaries where the browser can. */
+h1,
+h2,
+h3,
+h4 {
+  word-break: auto-phrase;
+  line-break: strict;
+  /* A phrase wider than a phone still breaks instead of pushing the page sideways. */
+  overflow-wrap: anywhere;
+}
+
+p,
+li,
+dd,
+td {
+  line-break: strict;
+}
+
+/* In-page jumps land below the sticky navigation bar. */
+.anchor {
+  scroll-margin-top: calc(var(--app-nav-height, 64px) + var(--spacing-5));
+}
+
+/* The findings rail follows the reader down a long report. */
+.rail-sticky {
+  position: sticky;
+  top: calc(var(--app-nav-height, 64px) + var(--spacing-6));
+  max-height: calc(100dvh - var(--app-nav-height, 64px) - var(--spacing-10));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+/* The drop zone in the hero is the main action: give it room. */
+.hero-drop {
+  width: 100%;
+  max-width: 560px;
+}
+
+/* Footer text is long legal copy; keep its measure readable. */
+.measure {
+  max-width: 72ch;
+}
+
+/* Policy pages: plain lists with the body text's size and color. */
+.legal-list {
+  display: grid;
+  gap: var(--spacing-2);
+  margin: 0;
+  padding-inline-start: 1.4em;
+  list-style: disc;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  line-height: 1.7;
+}
+.legal p,
+.legal .legal-list {
+  max-width: 68ch;
+}

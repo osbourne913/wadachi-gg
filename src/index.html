@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja" data-astryx-theme="neutral">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <!--
+      The page may load only its own files and may not talk to any server:
+      connect-src 'none' is what keeps a dropped file inside the browser.
+    -->
+    <meta http-equiv="Content-Security-Policy" content="{{CSP}}" />
+    <meta name="referrer" content="no-referrer" />
+    <title>{{TITLE}}</title>
+    <meta name="description" content="{{DESCRIPTION}}" />
+    <link rel="canonical" href="{{URL}}" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{NAME}}" />
+    <meta property="og:title" content="{{TITLE}}" />
+    <meta property="og:description" content="{{DESCRIPTION}}" />
+    <meta property="og:url" content="{{URL}}" />
+    <meta property="og:image" content="{{ORIGIN}}/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="{{BASE}}assets/app.css" />
+  </head>
+  <body data-page="{{PAGE}}">
+    <div id="root"></div>
+    <script src="{{BASE}}assets/app.js" defer></script>
+  </body>
+</html>

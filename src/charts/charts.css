@@ -1,0 +1,1064 @@
+/*
+ * Chart styles. Every color, radius, space and font comes from an Astryx token,
+ * so the charts follow whichever theme and mode is active.
+ *
+ * Color does two jobs only:
+ *   - one hue (blue) for the thing the chart is about; gray for context
+ *   - the same blue as a four-step ramp for "how much" in the heat grids
+ * The ramp runs light->dark on a light card and dark->light on a dark one, so
+ * "more" is always the step furthest from the surface.
+ */
+
+.viz {
+  --viz-accent: var(--color-data-categorical-blue);
+  --viz-context: light-dark(var(--color-data-gray-2), var(--color-data-gray-4));
+  --viz-zero: light-dark(var(--color-data-gray-1), var(--color-data-gray-5));
+  --viz-seq-1: light-dark(var(--color-data-blue-2), var(--color-data-blue-4));
+  --viz-seq-2: var(--color-data-blue-3);
+  --viz-seq-3: light-dark(var(--color-data-blue-4), var(--color-data-blue-2));
+  --viz-seq-4: light-dark(var(--color-data-blue-5), var(--color-data-blue-1));
+  --viz-grid: var(--color-border);
+  --viz-axis: var(--color-border-emphasized);
+  --viz-gap: 2px;
+
+  position: relative;
+  container-type: inline-size;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+  min-width: 0;
+}
+
+/* ---------- tooltip ---------- */
+
+.viz-tip {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  max-width: min(260px, 90cqi);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-element);
+  background: var(--color-background-popover);
+  box-shadow: var(--shadow-med);
+  outline: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.viz-tip-value {
+  display: block;
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ---------- legend ---------- */
+
+.viz-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1) var(--spacing-4);
+  align-items: center;
+}
+.viz-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1-5);
+  white-space: nowrap;
+}
+.viz-swatch {
+  flex: none;
+  inline-size: 12px;
+  block-size: 12px;
+  border-radius: 3px;
+  background: var(--viz-context);
+}
+.viz-swatch[data-level='0'] {
+  background: var(--viz-zero);
+}
+.viz-swatch[data-level='1'] {
+  background: var(--viz-seq-1);
+}
+.viz-swatch[data-level='2'] {
+  background: var(--viz-seq-2);
+}
+.viz-swatch[data-level='3'] {
+  background: var(--viz-seq-3);
+}
+.viz-swatch[data-level='4'] {
+  background: var(--viz-seq-4);
+}
+.viz-swatch[data-level='na'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--viz-axis);
+}
+.viz-swatch[data-tone='accent'] {
+  background: var(--viz-accent);
+}
+.viz-swatch[data-tone='context'] {
+  background: var(--viz-context);
+}
+
+/* ---------- heat grid ---------- */
+
+.viz-heat {
+  display: grid;
+  gap: var(--spacing-3);
+}
+.viz-heat-grid {
+  display: grid;
+  grid-template-columns: max-content repeat(var(--cols), minmax(0, 1fr)) max-content;
+  gap: var(--viz-gap);
+  align-items: center;
+}
+.viz-heat-grid[data-end='false'] {
+  grid-template-columns: max-content repeat(var(--cols), minmax(0, 1fr));
+}
+.viz-heat-col {
+  text-align: center;
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+  overflow: visible;
+  padding-block-end: var(--spacing-0-5);
+}
+.viz-heat-col[data-align='start'] {
+  text-align: start;
+}
+.viz-heat-row {
+  padding-inline-end: var(--spacing-2);
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+  text-align: end;
+}
+.viz-heat-end {
+  padding-inline-start: var(--spacing-2);
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+  text-align: end;
+  color: var(--color-text-primary);
+}
+.viz-heat-end[data-head='true'] {
+  color: var(--color-text-secondary);
+}
+.viz-cell {
+  block-size: var(--cell-h, 24px);
+  border-radius: 3px;
+  background: var(--viz-zero);
+}
+.viz-cell[data-level='1'] {
+  background: var(--viz-seq-1);
+}
+.viz-cell[data-level='2'] {
+  background: var(--viz-seq-2);
+}
+.viz-cell[data-level='3'] {
+  background: var(--viz-seq-3);
+}
+.viz-cell[data-level='4'] {
+  background: var(--viz-seq-4);
+}
+.viz-cell[data-level='na'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--viz-grid);
+}
+.viz-cell[data-active='true'],
+.viz-waffle-cell[data-active='true'] {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 1px;
+}
+
+/* ---------- ranked bars ---------- */
+
+.viz-bars {
+  display: grid;
+  grid-template-columns: fit-content(46%) minmax(48px, 1fr) max-content;
+  column-gap: var(--spacing-3);
+  row-gap: var(--spacing-2);
+  align-items: center;
+}
+.viz-bar-row {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  align-items: center;
+  min-block-size: 24px;
+  border-radius: var(--radius-inner);
+}
+.viz-bar-label {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  overflow-wrap: anywhere;
+}
+.viz-bar-track {
+  display: block;
+  block-size: 12px;
+}
+.viz-bar-fill {
+  display: block;
+  block-size: 100%;
+  min-inline-size: 2px;
+  /* Square at the baseline, rounded at the data end. */
+  border-radius: 0 4px 4px 0;
+  background: var(--viz-context);
+}
+.viz-bar-row[data-tone='accent'] .viz-bar-fill {
+  background: var(--viz-accent);
+}
+.viz-bar-row[data-active='true'] .viz-bar-fill {
+  filter: brightness(1.12);
+}
+.viz-bar-value {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  text-align: end;
+  white-space: nowrap;
+}
+.viz-bar-note {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  margin-inline-start: var(--spacing-1-5);
+}
+@container (max-width: 400px) {
+  .viz-bars {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    row-gap: var(--spacing-3);
+  }
+  .viz-bar-row {
+    row-gap: var(--spacing-1);
+  }
+  .viz-bar-label {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- columns ---------- */
+
+.viz-cols {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: var(--spacing-2);
+  /* Room for the top tick label and for a value label above the tallest bar. */
+  padding-block-start: var(--spacing-4);
+}
+.viz-cols-yaxis {
+  position: relative;
+  block-size: var(--plot-h, 168px);
+  font-size: var(--font-size-xs);
+  min-inline-size: 1.5em;
+}
+.viz-cols-ytick {
+  position: absolute;
+  inset-inline-end: 0;
+  transform: translateY(50%);
+  white-space: nowrap;
+}
+.viz-cols-plot {
+  position: relative;
+  block-size: var(--plot-h, 168px);
+  display: flex;
+  align-items: stretch;
+  border-block-end: 1px solid var(--viz-axis);
+}
+.viz-cols-gridline {
+  position: absolute;
+  inset-inline: 0;
+  block-size: 1px;
+  background: var(--viz-grid);
+}
+.viz-cols-slot {
+  position: relative;
+  flex: 1 1 0;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+.viz-cols-bar {
+  position: relative;
+  /* Bar height is data: never let the layout shrink it. */
+  flex: none;
+  inline-size: min(24px, max(2px, calc(100% - var(--viz-gap))));
+  min-block-size: 0;
+  /* Rounded at the data end, square on the baseline. */
+  border-radius: 4px 4px 0 0;
+  background: var(--viz-context);
+}
+.viz-cols[data-dense='true'] .viz-cols-bar {
+  border-radius: 2px 2px 0 0;
+}
+.viz-cols-slot[data-tone='accent'] .viz-cols-bar {
+  background: var(--viz-accent);
+}
+.viz-cols-slot[data-active='true'] .viz-cols-bar {
+  filter: brightness(1.12);
+}
+.viz-cols-slot[data-active='true']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-overlay-hover);
+}
+.viz-cols-cap {
+  position: absolute;
+  inset-block-end: 100%;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+  padding-block-end: 2px;
+}
+.viz-cols-xaxis {
+  grid-column: 2;
+  position: relative;
+  display: flex;
+  font-size: var(--font-size-xs);
+  padding-block-start: var(--spacing-1);
+  min-block-size: 1.6em;
+}
+.viz-cols-xlabel {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+.viz-cols-xtick {
+  position: absolute;
+  white-space: nowrap;
+}
+
+/* ---------- waffle ---------- */
+
+.viz-waffle-wrap {
+  display: grid;
+  gap: var(--spacing-3);
+}
+.viz-waffle {
+  display: grid;
+  grid-template-columns: repeat(var(--per-row, 10), minmax(0, 1fr));
+  gap: 3px;
+  max-inline-size: 260px;
+}
+.viz-waffle-cell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--viz-context);
+}
+.viz-waffle-cell[data-tone='accent'] {
+  background: var(--viz-accent);
+}
+
+/* ---------- month strip ---------- */
+
+.viz-strip {
+  display: grid;
+  gap: var(--spacing-3);
+}
+.viz-strip-rows {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  grid-auto-flow: row dense;
+  column-gap: var(--spacing-3);
+  row-gap: var(--spacing-2);
+  align-items: center;
+}
+.viz-strip-label {
+  grid-column: 1;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+}
+.viz-strip-track {
+  grid-column: 2;
+  display: flex;
+  block-size: 18px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--viz-zero);
+  cursor: default;
+  touch-action: pan-y;
+}
+.viz-strip-cell {
+  flex: 1 1 0;
+  min-inline-size: 0;
+}
+.viz-strip-cell[data-level='1'] {
+  background: var(--viz-seq-1);
+}
+.viz-strip-cell[data-level='2'] {
+  background: var(--viz-seq-2);
+}
+.viz-strip-cell[data-level='3'] {
+  background: var(--viz-seq-3);
+}
+.viz-strip-cell[data-level='4'] {
+  background: var(--viz-seq-4);
+}
+.viz-strip-cell[data-active='true'] {
+  box-shadow: inset 0 0 0 2px var(--color-text-primary);
+}
+.viz-strip-sum {
+  grid-column: 3;
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  text-align: end;
+}
+.viz-strip-axis {
+  grid-column: 2;
+  position: relative;
+  block-size: 1.5em;
+  font-size: var(--font-size-xs);
+}
+.viz-strip-tick {
+  position: absolute;
+  inset-block-start: 0;
+  padding-inline-start: 3px;
+  border-inline-start: 1px solid var(--viz-axis);
+  white-space: nowrap;
+}
+@container (max-width: 460px) {
+  .viz-strip-rows {
+    grid-template-columns: minmax(0, 1fr) max-content;
+  }
+  .viz-strip-rows {
+    grid-auto-flow: row;
+    row-gap: var(--spacing-1);
+  }
+  .viz-strip-label {
+    grid-column: 1;
+  }
+  .viz-strip-sum {
+    grid-column: 2;
+  }
+  .viz-strip-track {
+    grid-column: 1 / -1;
+    margin-block-end: var(--spacing-3);
+  }
+  .viz-strip-axis {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- thin segmented bar ---------- */
+
+.viz-seg {
+  display: flex;
+  gap: var(--viz-gap);
+  block-size: 8px;
+  inline-size: 100%;
+  min-inline-size: 64px;
+}
+.viz-seg-part {
+  border-radius: 999px;
+  background: var(--viz-context);
+  min-inline-size: 4px;
+}
+.viz-seg-part[data-tone='accent'] {
+  background: var(--viz-accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .viz-bar-fill,
+  .viz-cols-bar {
+    transition: filter var(--duration-fast, 120ms) ease;
+  }
+}
+
+/* ---------- treemap ---------- */
+
+.viz-treemap-wrap {
+  display: grid;
+  gap: var(--spacing-3);
+}
+.viz-treemap {
+  position: relative;
+  inline-size: 100%;
+}
+.viz-treemap-tile {
+  position: absolute;
+  box-sizing: border-box;
+  /* The 2px surface gap between tiles. */
+  border: 1px solid var(--color-background-card);
+  border-radius: 4px;
+  padding: 4px 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1px;
+  color: #fff;
+  cursor: default;
+}
+.viz-treemap-name {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.viz-treemap-value {
+  font-size: var(--font-size-xs);
+  opacity: 0.85;
+  font-variant-numeric: tabular-nums;
+}
+.viz-treemap-tile[data-active='true'] {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: -2px;
+}
+.viz-treemap-tile[data-group='0'],
+.viz-treemap-swatch[data-group='0'] {
+  background: var(--color-data-categorical-purple);
+}
+.viz-treemap-tile[data-group='1'],
+.viz-treemap-swatch[data-group='1'] {
+  background: var(--color-data-categorical-red);
+}
+.viz-treemap-tile[data-group='2'],
+.viz-treemap-swatch[data-group='2'] {
+  background: var(--color-data-categorical-blue);
+}
+.viz-treemap-tile[data-group='3'],
+.viz-treemap-swatch[data-group='3'] {
+  background: var(--color-data-categorical-orange);
+}
+.viz-treemap-tile[data-group='4'],
+.viz-treemap-swatch[data-group='4'] {
+  background: var(--color-data-categorical-teal);
+}
+.viz-treemap-tile[data-group='5'],
+.viz-treemap-swatch[data-group='5'] {
+  background: var(--color-data-categorical-brown);
+}
+.viz-treemap-tile[data-group='other'] {
+  background: var(--color-data-neutral);
+}
+
+/* ---------- highlight band ---------- */
+
+.hl-card {
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgb(1 113 227 / 0.28), transparent 55%),
+    radial-gradient(90% 80% at 100% 100%, rgb(107 30 253 / 0.22), transparent 60%),
+    var(--color-background-card);
+  border-radius: var(--radius-page, 16px);
+}
+.hl-number {
+  font-size: clamp(2.75rem, 7vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+.hl-number small {
+  font-size: 0.4em;
+  font-weight: 600;
+  margin-inline-start: 0.15em;
+  letter-spacing: 0;
+}
+
+/* Treemap tiles that carry a picture: the picture fills the tile, the role color
+   becomes a strip along the top, and the name sits on a shade at the bottom. */
+.viz-treemap-tile[data-image='true'] {
+  background-size: cover;
+  background-position: center 20%;
+  justify-content: flex-end;
+  padding: 0;
+  border-radius: 6px;
+}
+.viz-treemap-tile[data-image='true']::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  block-size: 4px;
+  background: var(--tile-role, var(--color-data-neutral));
+}
+.viz-treemap-tile[data-image='true']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.72), rgb(0 0 0 / 0) 55%);
+  pointer-events: none;
+}
+.viz-treemap-tile[data-image='true'] > span {
+  position: relative;
+  z-index: 1;
+  padding-inline: 6px;
+}
+.viz-treemap-tile[data-image='true'] > span:last-child {
+  padding-block-end: 4px;
+}
+.viz-treemap-tile[data-image='true'][data-group='0'] { --tile-role: var(--color-data-categorical-purple); }
+.viz-treemap-tile[data-image='true'][data-group='1'] { --tile-role: var(--color-data-categorical-red); }
+.viz-treemap-tile[data-image='true'][data-group='2'] { --tile-role: var(--color-data-categorical-blue); }
+.viz-treemap-tile[data-image='true'][data-group='3'] { --tile-role: var(--color-data-categorical-orange); }
+.viz-treemap-tile[data-image='true'][data-group='4'] { --tile-role: var(--color-data-categorical-teal); }
+.viz-treemap-tile[data-image='true'][data-group='5'] { --tile-role: var(--color-data-categorical-brown); }
+
+/* ---------- champion collection grid ---------- */
+
+.viz-dex {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  gap: 6px;
+}
+.viz-dex-cell {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background-size: cover;
+  background-color: var(--viz-zero);
+  cursor: default;
+}
+.viz-dex-cell[data-owned='false'] {
+  filter: grayscale(1);
+  opacity: 0.28;
+}
+.viz-dex-badge {
+  position: absolute;
+  inset-block-end: -4px;
+  inset-inline-end: -4px;
+  min-inline-size: 18px;
+  block-size: 18px;
+  padding-inline: 4px;
+  border-radius: 9px;
+  background: var(--color-text-primary);
+  color: var(--color-background-card);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 2px var(--color-background-card);
+}
+.viz-dex-cell[data-active='true'] {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 2px;
+}
+
+/* ---------- year calendar ---------- */
+
+.viz-cal {
+  /* Notes on the calendar wear one color of their own, away from the data's blue. */
+  --viz-note: var(--color-data-categorical-orange);
+  display: grid;
+  /* The drawing is sized from this column, so the column must not be sized from the drawing. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--spacing-2);
+}
+.viz-cal-svg {
+  display: block;
+  overflow: visible;
+  touch-action: pan-y;
+}
+.viz-cal-cell {
+  fill: var(--viz-zero);
+}
+.viz-cal-cell[data-level='1'] {
+  fill: var(--viz-seq-1);
+}
+.viz-cal-cell[data-level='2'] {
+  fill: var(--viz-seq-2);
+}
+.viz-cal-cell[data-level='3'] {
+  fill: var(--viz-seq-3);
+}
+.viz-cal-cell[data-level='4'] {
+  fill: var(--viz-seq-4);
+}
+/* A day outside the record: an outline, so it never reads as "no login". */
+.viz-cal-cell[data-level='na'] {
+  fill: none;
+  stroke: var(--viz-grid);
+  stroke-width: 1;
+  pointer-events: all;
+}
+.viz-cal-axis {
+  fill: var(--color-text-secondary);
+  font-size: 10px;
+}
+.viz-cal-note {
+  fill: var(--color-text-primary);
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  /* A halo in the card color keeps a note readable where a line passes behind it. */
+  paint-order: stroke;
+  stroke: var(--color-background-card);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.viz-cal-ring {
+  fill: none;
+  stroke: var(--viz-note);
+  stroke-width: 2;
+  pointer-events: none;
+}
+.viz-cal-span {
+  stroke: var(--viz-note);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.viz-cal-tick {
+  stroke: var(--viz-note);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+.viz-cal-cursor {
+  fill: none;
+  stroke: var(--color-text-primary);
+  stroke-width: 2;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .viz-cal-weeks[data-play='false'] .viz-cal-week,
+  .viz-cal-notes[data-play='false'] {
+    opacity: 0;
+  }
+  /*
+    The year fills in week by week, left to right; the notes follow. The fill is
+    "backwards" only: each piece waits unseen for its turn, and once it has
+    played nothing of the animation stays attached to it.
+  */
+  .viz-cal-weeks[data-play='true'] .viz-cal-week {
+    animation: viz-cal-in 240ms ease-out backwards;
+    animation-delay: calc(var(--w) * 7ms);
+  }
+  .viz-cal-notes[data-play='true'] {
+    animation: viz-cal-in 300ms ease-out 420ms backwards;
+  }
+}
+@keyframes viz-cal-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- hours of the day, as one hill ---------- */
+
+.viz-ridge {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--spacing-1);
+}
+.viz-ridge-svg {
+  display: block;
+  overflow: visible;
+}
+.viz-ridge-night {
+  fill: var(--viz-zero);
+  opacity: 0.7;
+}
+.viz-ridge-base {
+  stroke: var(--viz-axis);
+  stroke-width: 1;
+}
+.viz-ridge-area {
+  fill: var(--viz-accent);
+  opacity: 0.3;
+}
+.viz-ridge-line {
+  fill: none;
+  stroke: var(--viz-accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.viz-ridge-before {
+  fill: none;
+  stroke: var(--color-text-secondary);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 3;
+}
+.viz-ridge-tick {
+  fill: var(--color-text-secondary);
+  font-size: 10px;
+}
+.viz-ridge-swatch {
+  background: var(--viz-accent);
+}
+.viz-ridge-dash {
+  inline-size: 14px;
+  border-block-start: 1.5px dashed var(--color-text-secondary);
+}
+
+/* ---------- the story: one card per year ---------- */
+
+.story-hero {
+  display: grid;
+  gap: var(--spacing-2);
+  margin: 0;
+  font: inherit;
+}
+.story-hero-label {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+}
+
+.story-year {
+  margin: 0;
+  font-size: clamp(2.5rem, 6vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+.story-year small {
+  font-size: 0.4em;
+  font-weight: 600;
+  margin-inline-start: 0.12em;
+  letter-spacing: 0;
+}
+.story-total {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.story-total b {
+  margin-inline: 0.3em 0.1em;
+  color: var(--color-text-primary);
+  font-size: 1.375rem;
+  font-weight: 700;
+}
+
+.story-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--spacing-2) var(--spacing-3);
+}
+.story-head-tag {
+  justify-self: start;
+}
+/* On a phone the tag takes a line of its own, so a long one never pushes the total away. */
+.story-head[data-stacked='true'] .story-total {
+  grid-column: 3;
+}
+.story-head[data-stacked='true'] .story-head-tag {
+  grid-row: 2;
+  grid-column: 1 / -1;
+}
+
+.story-tiles {
+  display: grid;
+  gap: var(--spacing-4);
+}
+.story-tile-label {
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.story-tile {
+  display: grid;
+  align-content: start;
+  gap: var(--spacing-1);
+  min-inline-size: 0;
+}
+/* With room to spare (the wide layout), the labels take the body size. */
+@container (min-width: 520px) {
+  .story-tile-label {
+    font-size: var(--font-size-base);
+  }
+  .story-mini-axis {
+    font-size: var(--font-size-sm);
+  }
+}
+/* Sized from the row of tiles, so three figures fit side by side on a phone. */
+.story-figure {
+  font-size: clamp(1.125rem, 6.4cqi, 2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+.story-figure small {
+  font-size: 0.55em;
+  font-weight: 600;
+  margin-inline-start: 0.1em;
+}
+.story-mini-wrap {
+  margin-block-start: var(--spacing-1);
+}
+.story-mini {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  block-size: 28px;
+}
+.story-mini-bar {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  min-block-size: 2px;
+  border-radius: 2px 2px 0 0;
+  background: var(--viz-context);
+  transition: background-color 0.2s ease;
+}
+.story-mini-bar[data-active='true'] {
+  background: var(--viz-accent);
+}
+/* No data for that year: an outline, not a zero. */
+.story-mini-bar[data-na='true'] {
+  block-size: 3px;
+  background: none;
+  box-shadow: inset 0 0 0 1px var(--viz-axis);
+}
+.story-mini-axis {
+  display: flex;
+  justify-content: space-between;
+  margin-block-start: 2px;
+  color: var(--color-text-secondary);
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.story-lines {
+  display: grid;
+  gap: var(--spacing-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.story-lines li,
+.story-step span {
+  /* Break lines at phrase boundaries where the browser can. */
+  word-break: auto-phrase;
+  line-break: strict;
+}
+.story-lines li {
+  position: relative;
+  padding-inline-start: var(--spacing-4);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+}
+.story-lines li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0.62em;
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 50%;
+  background: var(--color-text-secondary);
+}
+.story-skins {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-2) var(--spacing-4);
+  min-block-size: 44px;
+}
+.story-extra {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: var(--spacing-8);
+  align-items: start;
+}
+
+/* A short window: the fixed card gives up some size to stay whole. */
+.story-card[data-density='compact'] .story-year,
+.story-card[data-density='tight'] .story-year {
+  font-size: 2.75rem;
+}
+.story-card[data-density='compact'] .story-figure,
+.story-card[data-density='tight'] .story-figure {
+  font-size: clamp(1.125rem, 6.4cqi, 1.625rem);
+}
+
+/* Narrow screens: the cards run down the page at a readable width. */
+.story-feed {
+  inline-size: 100%;
+  max-inline-size: 640px;
+  margin-inline: auto;
+}
+
+/* Wide screens: the notes scroll, the card stays. */
+.story-scrolly {
+  display: grid;
+  grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+  gap: var(--spacing-8);
+  align-items: start;
+}
+.story-stage {
+  position: sticky;
+  top: calc(var(--app-nav-height, 64px) + var(--spacing-5));
+}
+.story-steps {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* A thin rail with a dot per year, like a timeline. */
+.story-steps::before {
+  content: '';
+  position: absolute;
+  inset-block: 10px 0;
+  inset-inline-start: 5px;
+  inline-size: 2px;
+  background: var(--color-border);
+}
+.story-step {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--spacing-2);
+  min-block-size: 52vh;
+  padding-inline-start: var(--spacing-7);
+  padding-block-end: var(--spacing-8);
+  opacity: 0.4;
+  transition: opacity 0.25s ease;
+}
+.story-step:last-child {
+  min-block-size: 72vh;
+}
+.story-step[data-active='true'] {
+  opacity: 1;
+}
+.story-step::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 8px;
+  inline-size: 12px;
+  block-size: 12px;
+  border-radius: 50%;
+  background: var(--color-background-body);
+  box-shadow: inset 0 0 0 2px var(--color-border-emphasized);
+}
+.story-step[data-active='true']::before {
+  background: var(--color-text-primary);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .story-year,
+  .story-swap {
+    animation: story-swap 260ms ease-out backwards;
+  }
+}
+@keyframes story-swap {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

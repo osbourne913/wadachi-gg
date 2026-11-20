@@ -1,0 +1,25 @@
+/*
+  Neutral theme, adjusted for a Japanese page.
+
+  The theme names Figtree but leaves loading it to the app. It is inlined here
+  (Latin subset, one variable file) so the page makes no font request. Its
+  unicode-range is kept to Latin letters, digits and Latin punctuation: kana,
+  kanji and Japanese punctuation always come from the device's own gothic face.
+*/
+@font-face {
+  font-family: 'Figtree';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 900;
+  src: url('../../node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2') format('woff2');
+  unicode-range: U+0020-007E, U+00A0-00FF, U+2013-2014, U+2212;
+}
+
+[data-astryx-theme='neutral'] {
+  --font-family-body: Figtree, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Noto Sans CJK JP',
+    'Yu Gothic UI', 'Yu Gothic', Meiryo, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  --font-family-heading: Figtree, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Noto Sans CJK JP',
+    'Yu Gothic UI', 'Yu Gothic', Meiryo, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+}
