@@ -8,10 +8,10 @@ import {useCallback, useEffect, useMemo, useState} from 'react';
 import {Theme} from '@astryxdesign/core/theme';
 import {AppShell} from '@astryxdesign/core/AppShell';
 import {TopNav, TopNavHeading, TopNavItem} from '@astryxdesign/core/TopNav';
-import {NavIcon} from '@astryxdesign/core/NavIcon';
 import {Icon} from '@astryxdesign/core/Icon';
 import {IconButton} from '@astryxdesign/core/IconButton';
-import {Moon, Route, Sun} from 'lucide-react';
+import {Moon, Sun} from 'lucide-react';
+import {Mark} from './Mark';
 import {theme} from '#theme';
 import {LANDING_NAV, PAGES, REPORT_NAV, SITE, type PageId} from './site';
 import {useColorMode} from './lib/useColorMode';
@@ -216,7 +216,7 @@ export function App() {
             heading={
               <TopNavHeading
                 heading={SITE.name}
-                logo={<NavIcon icon={<Icon icon={Route} size="sm" />} />}
+                logo={<Mark size={28} />}
                 headingHref={view.kind === 'page' ? '/' : '#'}
               />
             }
