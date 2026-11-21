@@ -90,7 +90,7 @@ const PRIVACY: Section[] = [
     title: '5. 配信事業者が処理する情報',
     body: [
       <P key="a">
-        本サイトは Cloudflare, Inc. のサービス（Cloudflare Pages）で配信しています。ページを開くと、通常のウェブサイトと同様に、IPアドレス、ブラウザの種類、アクセス日時などの通信の情報が Cloudflare で処理されます。この情報に、読み込んだファイルの中身は含まれません。取り扱いは{' '}
+        本サイトは Cloudflare, Inc. のサービス（Cloudflare Workers）で配信しています。ページを開くと、通常のウェブサイトと同様に、IPアドレス、ブラウザの種類、アクセス日時などの通信の情報が Cloudflare で処理されます。この情報に、読み込んだファイルの中身は含まれません。取り扱いは{' '}
         <Ext href={SITE.cloudflarePrivacyUrl}>Cloudflare のプライバシーポリシー</Ext>
         に従います。
       </P>,

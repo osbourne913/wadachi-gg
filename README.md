@@ -30,18 +30,19 @@ npm run typecheck   # 型チェック
 npm run story -- --sample   # 年表のコメントをサンプルで出力
 ```
 
-## 公開（Cloudflare Pages）
+## 公開（Cloudflare Workers）
 
-GitHub のリポジトリを Cloudflare Pages につなぎ、次のように設定します。
+公開先: https://wadachi-gg.osbourne913.workers.dev/
+
+GitHub のリポジトリを Cloudflare Workers（Workers Builds）につないでいます。`main` に push すると自動で公開されます。
 
 | 項目 | 値 |
 | --- | --- |
-| Framework preset | None |
 | Build command | `npm run build` |
-| Build output directory | `dist` |
+| 静的ファイルの場所 | `dist` |
 | 環境変数 | `NODE_VERSION` = `22` |
 
-`public/_headers` のセキュリティヘッダー（CSP など）は、Cloudflare Pages がそのまま付けます。公開先の URL が変わったら `src/site.ts` の `SITE.url` を直してください（OGP の画像の URL に使います）。
+`public/_headers` のセキュリティヘッダー（CSP など）は、Cloudflare がそのまま付けます。HTML の `<meta>` にも同じ CSP を入れているので、ヘッダーが付かない環境でも外部への通信は止まります。公開先の URL が変わったら `src/site.ts` の `SITE.url` を直してください（OGP の画像の URL に使います）。
 
 ## 構成
 

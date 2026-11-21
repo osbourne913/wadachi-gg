@@ -6,7 +6,7 @@ export const SITE = {
   name: 'Wadachi.gg',
   tagline: 'データ請求で届いたファイルを、年表と図で読む。',
   /** Where the site is served. Social cards need an absolute address. */
-  url: 'https://wadachi-gg.pages.dev',
+  url: 'https://wadachi-gg.osbourne913.workers.dev',
   repoUrl: 'https://github.com/osbourne913/wadachi-gg',
   issuesUrl: 'https://github.com/osbourne913/wadachi-gg/issues',
   /** Shown as the operator on the policy pages. */

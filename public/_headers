@@ -1,4 +1,4 @@
-# Response headers for Cloudflare Pages.
+# Response headers, applied by Cloudflare (Workers static assets and Pages both read this file).
 # connect-src 'none' forbids the page from contacting any server, so a file
 # dropped on the page cannot leave the browser.
 /*
