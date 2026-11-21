@@ -53,8 +53,11 @@ export function ShareSection({report}: {report: Report}) {
   const post = async () => {
     setNote(null);
     if (file && canShareFile) {
+      // Some apps drop the text when an image comes with it, so the text also goes to the clipboard.
+      await navigator.clipboard?.writeText(`${text}\n${SITE.url}`).catch(() => undefined);
       try {
         await navigator.share({files: [file], text: `${text}\n${SITE.url}`});
+        setNote('文章が入っていなければ、貼り付けてください（コピー済みです）。');
         return;
       } catch (e) {
         if ((e as Error).name === 'AbortError') {
