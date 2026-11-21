@@ -95,3 +95,29 @@ td {
 .legal .legal-list {
   max-width: 68ch;
 }
+
+/* Share: the image preview keeps its proportions; the post text keeps its line breaks. */
+.share-preview {
+  inline-size: 100%;
+  max-inline-size: 760px;
+  border-radius: var(--radius-page, 16px);
+  overflow: hidden;
+  background: #0e0f12;
+}
+.share-preview img {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+}
+.share-text {
+  margin: 0;
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-container, 8px);
+  background: var(--color-background-muted, rgba(127, 127, 127, 0.08));
+  color: var(--color-text-primary);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

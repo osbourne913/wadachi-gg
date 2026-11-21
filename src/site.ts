@@ -28,6 +28,7 @@ export const LANDING_NAV = [
 
 export const REPORT_NAV = [
   {id: 'story', label: '年表'},
+  {id: 'share', label: 'シェア'},
   {id: 'play', label: '遊んだ時間'},
   {id: 'spend', label: '課金とストア'},
   {id: 'recent', label: '直近の試合'},

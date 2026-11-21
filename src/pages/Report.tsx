@@ -14,6 +14,7 @@ import {dateLong, num} from '../lib/format';
 import type {Report} from '../lib/riot/types';
 import {Findings} from '../sections/Overview';
 import {StorySection} from '../sections/Story';
+import {ShareSection} from '../sections/Share';
 import {PlaySection} from '../sections/Play';
 import {SpendSection} from '../sections/Spend';
 import {RecentSection} from '../sections/Recent';
@@ -118,7 +119,10 @@ export function ReportPage({report, onReset}: Props) {
         header={header}
         content={
           <LayoutContent padding={6} isScrollable={false}>
-            <StorySection report={report} />
+            <VStack gap={10}>
+              <StorySection report={report} />
+              <ShareSection report={report} />
+            </VStack>
           </LayoutContent>
         }
       />
