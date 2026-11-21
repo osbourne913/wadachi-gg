@@ -1,11 +1,23 @@
-// The site's mark: a W drawn as a pair of wheel tracks (wadachi). Same drawing as public/favicon.svg.
+// The site's mark: a W with wheel tracks (wadachi) running toward it. Same drawing as public/favicon.svg.
+
+import {useId} from 'react';
 
 export function Mark({size = 20}: {size?: number}) {
+  const clip = useId();
   return (
-    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true" style={{display: 'block', borderRadius: size * 0.22}}>
+    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true" style={{display: 'block'}}>
+      <defs>
+        <clipPath id={clip}>
+          <rect width="64" height="64" rx="14" />
+        </clipPath>
+      </defs>
       <rect width="64" height="64" rx="14" fill="#16181d" />
-      <path d="M10 14l8 30 7-22 7 22 7-22 7 22 8-30" fill="none" stroke="#3b8bff" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" opacity=".45" />
-      <path d="M10 22l8 30 7-22 7 22 7-22 7 22 8-30" fill="none" stroke="#ffffff" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+      <g clipPath={`url(#${CSS.escape(clip)})`}>
+        <path d="M9 11h9.5l4.5 16 5.5-16h7l5.5 16 4.5-16H55l-10 27h-7.5L32 22.5 26.5 38H19z" fill="#ffffff" />
+        <path d="M-2 66L9 66C19 54 31 47.5 47 45.5L47 41C27 42.5 10 51 -2 66z" fill="#3b8bff" />
+        <path d="M17 66L29 66C36 57.5 44 53 58 51.5L58 47C40 48 26 54 17 66z" fill="#3b8bff" />
+      </g>
+      <rect x=".5" y=".5" width="63" height="63" rx="13.5" fill="none" stroke="#ffffff" strokeOpacity=".08" />
     </svg>
   );
 }
